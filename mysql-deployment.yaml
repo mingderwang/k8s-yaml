@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: mysql
+  serviceName: "mysql"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root123456
+        ports:
+          - containerPort: 3306
+        volumeMounts:
+        - name: gluster-mysql-data
+          mountPath: "/var/lib/mysql"
+  volumeClaimTemplates:
+  - metadata:
+      name: gluster-mysql-data
+    spec:
+      accessModes: [ "ReadWriteMany" ]
+      storageClassName: "my-gfs-storageclass"
+      resources:
+        requests:
+          storage: 2Gi

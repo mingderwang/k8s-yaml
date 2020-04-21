@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: glusterfs
+provisioner: kubernetes.io/glusterfs
+parameters:
+  resturl: "http://10.99.1.199:8080"
+  clusterid: "a46d8cd541d9e12fea77fec876ffb5e9"
+  restauthenabled: "true"
+  restuser: "admin"
+  restuserkey: "adminkey"
+  volumetype: "replicate:2"
